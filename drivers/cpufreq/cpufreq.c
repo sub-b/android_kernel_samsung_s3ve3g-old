@@ -479,25 +479,17 @@ static ssize_t store_##file_name					\
 	if (ret != 1)							\
 		return -EINVAL;						\
 									\
-	policy->user_policy.object = new_policy.object;			\
-	new_policy.user_policy.object = new_policy.object;		\
-									\
 	ret = cpufreq_driver->verify(&new_policy);			\
 	if (ret)							\
 		pr_err("cpufreq: Frequency verification failed\n");	\
 									\
+	policy->user_policy.object = new_policy.object;			\
 	ret = __cpufreq_set_policy(policy, &new_policy);		\
 									\
 	return ret ? ret : count;					\
 }
 
-#ifdef CONFIG_SEC_PM
-#ifndef CONFIG_ARCH_MSM8226
-/* Disable scaling_min_freq store */
-	store_one(scaling_min_freq, min);
-#endif
-#endif
-
+store_one(scaling_min_freq, min);
 store_one(scaling_max_freq, max);
 
 /**
@@ -690,21 +682,8 @@ cpufreq_freq_attr_ro(affected_cpus);
 cpufreq_freq_attr_ro(cpu_utilization);
 #ifdef CONFIG_SEC_PM
 cpufreq_freq_attr_ro(cpu_load);
-/* Disable scaling_min_freq store */
-#ifdef CONFIG_ARCH_MSM8226
-cpufreq_freq_attr_ro(scaling_min_freq);
-#else
+#endif
 cpufreq_freq_attr_rw(scaling_min_freq);
-#endif
-#else
-#ifdef CONFIG_ARCH_MSM8226
-cpufreq_freq_attr_ro(scaling_min_freq);
-#else
-cpufreq_freq_attr_rw(scaling_min_freq);
-#endif
-#endif
-
-
 cpufreq_freq_attr_rw(scaling_max_freq);
 cpufreq_freq_attr_rw(scaling_governor);
 cpufreq_freq_attr_rw(scaling_setspeed);
@@ -1387,7 +1366,7 @@ static unsigned int __cpufreq_get(unsigned int cpu)
 	struct cpufreq_policy *policy = per_cpu(cpufreq_cpu_data, cpu);
 	unsigned int ret_freq = 0;
 
-	if (!cpufreq_driver->get || policy == 0)
+	if (!cpufreq_driver->get)
 		return ret_freq;
 
 	ret_freq = cpufreq_driver->get(cpu);
