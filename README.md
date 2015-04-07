@@ -1,0 +1,1 @@
+# SM-T530_KK_Opensource | T530XXU1ANCD
