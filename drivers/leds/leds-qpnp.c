@@ -1120,7 +1120,7 @@ static int qpnp_mpp_set(struct qpnp_led_data *led)
 
 	return 0;
 }
-
+#ifdef DVFS
 static int qpnp_flash_regulator_operate(struct qpnp_led_data *led, bool on)
 {
 	int rc, i;
@@ -1204,7 +1204,8 @@ regulator_turn_off:
 
 	return 0;
 }
-
+#ifdef DVFS
+#endif
 static int qpnp_torch_regulator_operate(struct qpnp_led_data *led, bool on)
 {
     int rc;
@@ -1251,7 +1252,8 @@ regulator_turn_off:
     }
     return 0;
 }
-
+#endif
+#ifdef DVFS
 extern void change_boost_control(int on);
 static int qpnp_flash_set(struct qpnp_led_data *led)
 {
@@ -1555,7 +1557,7 @@ error_flash_set:
 	}
 	return rc;
 }
-
+#endif
 static int qpnp_kpdbl_set(struct qpnp_led_data *led)
 {
 	int duty_us;
@@ -1733,7 +1735,7 @@ static void __qpnp_led_work(struct qpnp_led_data *led,
 		break;
 	case QPNP_ID_FLASH1_LED0:
 	case QPNP_ID_FLASH1_LED1:
-		rc = qpnp_flash_set(led);
+//		rc = qpnp_flash_set(led);
 		if (rc < 0)
 			dev_err(&led->spmi_dev->dev,
 				"FLASH set brightness failed (%d)\n", rc);
