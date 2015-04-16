@@ -2,7 +2,7 @@
 CONFIG_MACH_MATISSEWIFI_OPEN=y
 CONFIG_SEC_MATISSE_PROJECT=y
 CONFIG_SEC_MATISSEWIFI_COMMON=y
-#
+
 #
 #CONFIG_CMDLINE="console=tty0,115200 fbcon=rotate:1 fbcon=font:VGA8x8"
 ##CONFIG_CMDLINE="mem=109M diag=arm9 fbcon=rotate:1 fbcon=font:VGA8x8"
