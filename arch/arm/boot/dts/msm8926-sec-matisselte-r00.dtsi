@@ -752,5 +752,5 @@
 };
 
 &dsi2lvds_wxga_vid_lte {
-	qcom,cont-splash-enabled;
+//	qcom,cont-splash-enabled;
 };
